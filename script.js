@@ -12,7 +12,7 @@ var listaContatos = [];
 
 window.addEventListener('load', atualizarListaDeContatos);
 formContato.addEventListener('submit', salvarContato);
-botaoCancelar.addEventListener('click', limparArea)
+botaoCancelar.addEventListener('click', limparArea);
 botaoNovoContato.addEventListener('click', function () {
     novoContato.classList.remove('d-none');
 });
@@ -61,7 +61,7 @@ function testeDados(nome, telefone, email) {
         campoTelefone.classList.add('is-invalid');
         validacaoOk = false;
     }
-    if (email.trim().length === 0) {
+    if (email.length === 0) {
         mensagemErro.classList.remove('d-none');
         erro += " Digite o <b>Email</b> corretamente"
         campoEmail.classList.add('is-invalid');
@@ -124,9 +124,4 @@ function atualizarListaDeContatos() {
             } )
         }
     }
-    
 }
-
-
-
-
