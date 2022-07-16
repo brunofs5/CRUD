@@ -48,8 +48,8 @@ const criarSala = (cliente, index) => {
     const novaSala = document.createElement('tr');
     novaSala.innerHTML = `
     <td>${cliente.nome}</td>
-    <td>${cliente.email}</td>
     <td>${cliente.celular}</td>
+    <td>${cliente.email}</td>
     <td>
     <button type="button" class="btn btn-success btn-sm" id="edit-${index}">Editar</button>
     <button type="button" class="btn btn-danger btn-sm" id="delete-${index}" >Excluir</button>
@@ -70,7 +70,7 @@ const preencherCampos = (cliente) => {
     document.getElementById('campoNome').value = cliente.nome;
     document.getElementById('campoCelular').value = cliente.celular;
     document.getElementById('campoEmail').value = cliente.email;
-    document.getElementById('campoNome').dataset.index = cliente.index; 
+    document.getElementById('campoNome').dataset.index = cliente.index;
 }
 const editarCliente = (index) => {
     const cliente = getLocalStorage()[index];
@@ -79,14 +79,14 @@ const editarCliente = (index) => {
     abrirModal();
 }
 const editarDeletar = (event) => {
-    if(event.target.type == 'button'){
+    if (event.target.type == 'button') {
         const [action, index] = event.target.id.split('-');
-        if(action == 'edit'){
+        if (action == 'edit') {
             editarCliente(index);
         } else {
             const cliente = getLocalStorage()[index];
             const reposta = confirm(`Deseja Realmente excluir o cliente ${cliente.nome} ?`);
-            if(reposta){
+            if (reposta) {
                 deletarCliente(index);
                 atualizarTabela();
             }
