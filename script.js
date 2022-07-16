@@ -1,127 +1,100 @@
-var botaoNovoContato = document.getElementById('botaoNovoContato');
-var formContato = document.getElementById('formContato');
-var campoNome = document.getElementById('nomeContato');
-var campoTelefone = document.getElementById('telefoneContato');
-var campoEmail = document.getElementById('emailContato');
-var mensagemErro = document.getElementById('mensagemErro');
-var botaoCancelar = document.getElementById('buttonCancelar');
-var botaoSalvar = document.getElementById('buttonSalvar');
-var novoContato = document.getElementById('novoContato');
-var tabelaContatos = document.getElementById('tabelaContatos');
-var listaContatos = [];
-
-window.addEventListener('load', atualizarListaDeContatos);
-formContato.addEventListener('submit', salvarContato);
-botaoCancelar.addEventListener('click', limparArea);
-botaoNovoContato.addEventListener('click', function () {
-    novoContato.classList.remove('d-none');
-});
-
-function salvarContato(e) {
-    e.preventDefault();
-    var nome = campoNome.value;
-    var telefone = campoTelefone.value;
-    var email = campoEmail.value;
-    if (testeDados(nome, telefone, email)) {
-        listaContatos.push({
-            nome: nome,
-            telefone: telefone,
-            email: email,
-        });
-        atualizarListaDeContatos();
-    } else {
-        console.log('dados Invalidos')
-    }
-};
-function limparArea(){
-    novoContato.classList.add('d-none');
-    mensagemErro.classList.add('d-none');
-    campoNome.classList.remove('is-invalid');
-    campoTelefone.classList.remove('is-invalid');
-    campoEmail.classList.remove('is-invalid');
-    campoTelefone.value = '';
-    campoNome.value = '';
-    campoEmail.value = '';
-    mensagemErro.innerHTML = '';
+const abrirModal = () => novoCliente.classList.remove('d-none');
+const fecharModal = () => novoCliente.classList.add('d-none');
+const getLocalStorage = () => JSON.parse(localStorage.getItem('bdCliente')) ?? [];
+const setLocalStorage = (bdCliente) => localStorage.setItem('bdCliente', JSON.stringify(bdCliente));
+const criarCliente = (cliente) => {
+    const bdCliente = getLocalStorage();
+    bdCliente.push(cliente);
+    setLocalStorage(bdCliente);
 }
-
-function testeDados(nome, telefone, email) {
-    var validacaoOk = true;
-    var erro = '';
-    
-    if (nome.trim().length === 0) {
-        mensagemErro.classList.remove('d-none');
-        campoNome.classList.add('is-invalid');
-        validacaoOk = false;
-        erro = "Digite o <b>Nome</b> corretamente<br>";
-    }
-    if (telefone == ' ' || telefone.length < 11) {
-        mensagemErro.classList.remove('d-none');
-        erro += 'Digite o <b>Telefone</b> corretamente<br>';
-        campoTelefone.classList.add('is-invalid');
-        validacaoOk = false;
-    }
-    if (email.length === 0) {
-        mensagemErro.classList.remove('d-none');
-        erro += " Digite o <b>Email</b> corretamente"
-        campoEmail.classList.add('is-invalid');
-    }
-    if (!validacaoOk) {
-        mensagemErro.innerHTML = erro;
-    } else {
-        mensagemErro.classList.add('d-none');
-        campoNome.classList.remove('is-invalid');
-        campoTelefone.classList.remove('is-invalid');
-        campoEmail.classList.remove('is-invalid');
-        validacaoOk;
-
-    }
-    return validacaoOk;
-};
-
-function atualizarListaDeContatos() {
-    if (listaContatos.length === 0) {
-        tabelaContatos.innerHTML = '<tr><td colspan="4">Nenhum Contato</td></tr>';
-    }else{
-        tabelaContatos.innerHTML = '';
-        for (var i = 0; i < listaContatos.length; i++) {
-            var objeto = listaContatos[i];
-            var linha = document.createElement('tr');
-            var celulaNome = document.createElement('td');
-            var celulaTelefone = document.createElement('td');
-            var celulaEmail = document.createElement('td');
-            var celulaAcoes = document.createElement('td');
-            var botaoExcluir = document.createElement('button');
-            var botaoEditar = document.createElement('button');
-            botaoEditar.innerText = "Editar";
-            botaoEditar.classList.add('btn');
-            botaoEditar.classList.add('btn-success');
-            botaoEditar.classList.add('btn-sm');
-            botaoExcluir.innerText = "Remover";
-            botaoExcluir.classList.add('btn');
-            botaoExcluir.classList.add('btn-danger');
-            botaoExcluir.classList.add('btn-sm');
-            celulaNome.innerText = objeto.nome;
-            celulaTelefone.innerText = objeto.telefone;
-            celulaEmail.innerText = objeto.email;
-            linha.appendChild(celulaNome);
-            linha.appendChild(celulaTelefone);
-            linha.appendChild(celulaEmail);
-            linha.appendChild(celulaAcoes);
-            celulaAcoes.appendChild(botaoExcluir);
-            celulaAcoes.appendChild(botaoEditar);
-            tabelaContatos.appendChild(linha);
-    
-            botaoExcluir.addEventListener('click', function (e) {
-                var posicao = e.target.getAttribute('nome-telefone-email');
-                listaContatos.splice(posicao, 1);
-                atualizarListaDeContatos();
-                limparArea();
-            });
-    
-            botaoEditar.addEventListener('click', function(e){
-                console.log(e);
-            } )
+const deletarCliente = (index) => {
+    const bdCliente = getLocalStorage();
+    bdCliente.splice(index, 1);
+    setLocalStorage(bdCliente);
+}
+const atualizarCliente = (index, cliente) => {
+    const bdCliente = getLocalStorage();
+    bdCliente[index] = cliente;
+    setLocalStorage(bdCliente);
+}
+const validacaoCampos = () => {
+    return document.getElementById('formularioCliente').reportValidity();
+}
+const limparCampos = () => {
+    const campos = document.getElementById('formularioCliente');
+    campos.forEach(campos => campos.value = '');
+    document.getElementById('campoNome').dataset.index = 'new';
+}
+const salvarCliente = () => {
+    if (validacaoCampos()) {
+        const cliente = {
+            nome: document.getElementById('campoNome').value,
+            celular: document.getElementById('campoCelular').value,
+            email: document.getElementById('campoEmail').value
+        }
+        const index = document.getElementById('campoNome').dataset.index;
+        if (index == 'new') {
+            criarCliente(cliente);
+            atualizarTabela();
+            fecharModal();
+        } else {
+            atualizarCliente(index, cliente);
+            atualizarTabela();
+            fecharModal();
         }
     }
 }
+const criarSala = (cliente, index) => {
+    const novaSala = document.createElement('tr');
+    novaSala.innerHTML = `
+    <td>${cliente.nome}</td>
+    <td>${cliente.email}</td>
+    <td>${cliente.celular}</td>
+    <td>
+    <button type="button" class="btn btn-success btn-sm" id="edit-${index}">Editar</button>
+    <button type="button" class="btn btn-danger btn-sm" id="delete-${index}" >Excluir</button>
+    </td>
+    `
+    document.getElementById('tabelaCliente').appendChild(novaSala);
+}
+const limparTabela = () => {
+    const sala = document.querySelectorAll('table>tbody tr')
+    sala.forEach(sala => sala.parentNode.removeChild(sala));
+}
+const atualizarTabela = () => {
+    const bdCliente = getLocalStorage();
+    limparTabela();
+    bdCliente.forEach(criarSala);
+}
+const preencherCampos = (cliente) => {
+    document.getElementById('campoNome').value = cliente.nome;
+    document.getElementById('campoCelular').value = cliente.celular;
+    document.getElementById('campoEmail').value = cliente.email;
+    document.getElementById('campoNome').dataset.index = cliente.index; 
+}
+const editarCliente = (index) => {
+    const cliente = getLocalStorage()[index];
+    cliente.index = index;
+    preencherCampos(cliente);
+    abrirModal();
+}
+const editarDeletar = (event) => {
+    if(event.target.type == 'button'){
+        const [action, index] = event.target.id.split('-');
+        if(action == 'edit'){
+            editarCliente(index);
+        } else {
+            const cliente = getLocalStorage()[index];
+            const reposta = confirm(`Deseja Realmente excluir o cliente ${cliente.nome} ?`);
+            if(reposta){
+                deletarCliente(index);
+                atualizarTabela();
+            }
+        }
+    }
+}
+atualizarTabela();
+document.getElementById('botaoSalvar').addEventListener('click', salvarCliente);
+document.getElementById('botaoNovoCliente').addEventListener('click', abrirModal);
+document.getElementById('botaoCancelar').addEventListener('click', fecharModal);
+document.getElementById('tabelaCliente').addEventListener('click', editarDeletar);
