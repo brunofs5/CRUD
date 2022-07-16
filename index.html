@@ -17,8 +17,8 @@
             <h1 class="row d-flex justify-content-center">Agenda de Contato</h1>
         </div>
 
-        <div id='novoContato' class="border rounded d-none">
-            <form action="" id="formContato">
+        <div id='novoCliente' class="border rounded d-none">
+            <form id='formularioCliente' class="modal-form">
                 <div class="row">
                     <div class="col-12">
                         <h2>Novo Contato</h2>
@@ -27,27 +27,22 @@
                 <div class="row g-3">
                     <div class="col-12">
                         <label for="nomeContato" class="form-label"><b>Nome</b></label>
-                        <input type="text" name="contato" id="nomeContato" class="form-control">
+                        <input type="text" name="contato" data-index="new" id="campoNome" class="form-control" required>
                     </div>
                     <div class="col-12">
-                        <label for="telefoneContato" class="form-label"><b>Telefone</b></label>
-                        <input type="number" name="telefone" id="telefoneContato" class="form-control"
-                            placeholder="(85)858585859">
+                        <label for="telefoneContato" class="form-label"><b>Celular</b></label>
+                        <input type="number" name="telefone" id="campoCelular" class="form-control"
+                            placeholder="(85)858585859" required>
                     </div>
                     <div class="col-12">
                         <label for="emailContato" class="form-label"><b>Email</b></label>
-                        <input type="text" name="email" id="emailContato" class="form-control"
-                            placeholder="nome@exemplo.com">
+                        <input type="email" name="email" id="campoEmail" class="form-control"
+                            placeholder="nome@exemplo.com" required>
                     </div>
-                    <div class="col-12">
-                        <div id="mensagemErro" class="alert alert-danger d-none" role="alert">
-                            Mensagem de erro!!
-                        </div>
-                    </div>
-                    <div id="buttonCancelar" class="col-6">
+                    <div id="botaoCancelar" class="col-6">
                         <button type="button" class="btn btn-danger w-100">Cancelar</button>
                     </div>
-                    <div id="buttonSalvar" class="col-6">
+                    <div id="botaoSalvar" class="col-6">
                         <button type="submit" class="btn btn-primary w-100">Salvar</button>
                     </div>
                 </div>
@@ -63,21 +58,21 @@
                 </h2>
             </div>
             <div class="col-auto">
-                <button id="botaoNovoContato" type="button" class="btn btn-success">Novo Contato</button>
+                <button id="botaoNovoCliente" type="button" class="btn btn-success">Novo Contato</button>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="modalContatos">
             <div class="col-12">
-                <table class="table">
+                <table class="table" id="tabela">
                     <thead>
                         <tr>
                             <th scope="col">Nome</th>
-                            <th scope="col">Telefone</th>
+                            <th scope="col">Celular</th>
                             <th scope="col">Email</th>
                             <th scope="col">Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="tabelaContatos">
+                    <tbody id='tabelaCliente'>
                     </tbody>
                 </table>
             </div>
